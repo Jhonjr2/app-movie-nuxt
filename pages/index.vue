@@ -1,6 +1,6 @@
 <template>
   <div class="Movie">
-    <h1>Películas</h1>
+    <h1>Movie</h1>
     <div v-if="isLoading">
       <p>Cargando...</p>
     </div>
@@ -12,9 +12,19 @@
         <NuxtLink :to="`/movie/${movie.id}`">
           <img class="img_movie" :src="'https://image.tmdb.org/t/p/w500' + movie.poster_path" :alt="movie.title">
           <h2 class="title_movie">{{ movie.title }}</h2>
-          <p class="releaseDate_movie">{{ movie.release_date }}</p>
         </NuxtLink>
-        <button @click="toggleFavorite(movie)">Agregar a mi Lista</button>
+        <div class="info_bottom">
+          <p class="releaseDate_movie">{{ formatDate(movie.release_date) }}</p>
+         <div class="icons">
+           <button class="btn_favorite" v-tooltip="'Add to favorite'" @click="toggleFavorite(movie)">
+             <font-awesome-icon v-if="isFavorite(movie.id)" class="icon_check" icon="check" />
+             <font-awesome-icon v-else class="icon_plus" icon="plus" />
+           </button>
+           <NuxtLink :to="`/movie/${movie.id}`">
+           <font-awesome-icon v-tooltip="'Play'" class="icon_play" icon="play" />
+          </NuxtLink>
+         </div>
+        </div>
       </div>
       <p v-if="displayedMovies.length === 0 && !isLoading">No se encontraron resultados.</p>
     </div>
@@ -23,11 +33,12 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
+import type { Ref } from 'vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios';
 import type { Movie } from '~/types/Movie';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-const searchTerm = ref('');
 const allMovies = ref<Movie[]>([]);
 const displayedMovies = ref<Movie[]>([]);
 const selectedMovie = ref<Movie | null>(null);
@@ -36,15 +47,31 @@ const error = ref('');
 const route = useRoute();
 
 const toggleFavorite = (movie: Movie) => {
-  const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-  const index = favorites.findIndex((fav: Movie) => fav.id === movie.id);
+  const storedFavorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+  const index = storedFavorites.findIndex((fav: Movie) => fav.id === movie.id);
+  const updatedFavorites = [...storedFavorites];
   if (index === -1) {
-    favorites.push(movie);
+    updatedFavorites.push(movie);
   } else {
-    favorites.splice(index, 1);
+    updatedFavorites.splice(index, 1);
   }
-  localStorage.setItem('favorites', JSON.stringify(favorites));
+  localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+  favorites.value = updatedFavorites;
 };
+
+const favorites: Ref<Movie[]> = ref<Movie[]>([]);
+
+if (process.client) {
+  const storedFavorites = localStorage.getItem('favorites');
+  if (storedFavorites) {
+    favorites.value = JSON.parse(storedFavorites);
+  }
+}
+
+const isFavorite = (movieId: number) => {
+  return favorites.value.some((fav: Movie) => fav.id === movieId);
+};
+
 
 const fetchMovies = async (genreId: string | null) => {
   isLoading.value = true;
@@ -60,7 +87,6 @@ const fetchMovies = async (genreId: string | null) => {
     displayedMovies.value = allMovies.value;
     localStorage.setItem('allMovies', JSON.stringify(response.data.results));
     localStorage.setItem('displayedMovies', JSON.stringify(response.data.results));
-
   } catch (error) {
     console.error('Error al obtener películas:', error);
   } finally {
@@ -77,33 +103,15 @@ watch(route, (newRoute) => {
   const genreId = newRoute.query.genre ? newRoute.query.genre.toString() : null;
   fetchMovies(genreId);
 });
+
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+  return date.toLocaleDateString('es-ES', options);
+};
+
 </script>
 
 <style scoped>
-.Movie {
-  padding: 90px 40px 0px;
-}
-
-.container_movie {
-  padding: 30px 10px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2em;
-}
-
-.info_movie {
-  max-width: 200px;
-}
-
-.releaseDate_movie,
-.title_movie {
-  font-size: 15px;
-  max-width: 100%;
-  color: black;
-}
-
-.img_movie {
-  width: 100%;
-  box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.749);
-}
+@import '@/assets/css/components/movie/moviePage.css';
 </style>

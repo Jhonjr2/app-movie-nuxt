@@ -10,12 +10,16 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.5.2",
+    "@fortawesome/free-solid-svg-icons": "^6.5.2",
+    "@fortawesome/vue-fontawesome": "^3.0.8",
     "@nuxt/http": "^0.6.4",
     "axios": "^1.7.2",
     "consola": "^3.2.3",
     "defu": "^6.1.4",
     "dotenv": "^16.4.5",
     "nuxt": "^3.11.2",
+    "tippy.js": "^6.3.7",
     "vue": "^3.4.27",
     "vue-router": "^4.3.2",
     "vuex": "^4.1.0"

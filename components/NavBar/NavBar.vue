@@ -21,14 +21,14 @@
       </li>
     </ul>
     <div class="search_container">
-      <input class="search_movie" type="text" v-model="searchTerm" @keyup.enter="searchMovies" placeholder="Search for a movie..." />
-      <button class="btn_search_movie" @click="searchMovies">Search</button>
+      <input class="search_movie" type="text" v-model="searchTerm" @keyup.enter="searchItems" placeholder="Search for a movie or series..." />
+      <button class="btn_search_movie" @click="searchItems">Search</button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
 
 interface Genre {
@@ -37,18 +37,40 @@ interface Genre {
 }
 
 const genres = ref<Genre[]>([]);
-const allMovies = ref<any[]>([]);
-const displayedMovies = ref<any[]>([]);
-
+const allItems = ref<any[]>([]);
 const searchTerm = ref('');
+const displayedItems = ref<any[]>([]);
+
 const searchResults = computed(() => {
-  return allMovies.value.filter((movie: { title: string }) =>
-    movie.title.toLowerCase().includes(searchTerm.value.toLowerCase())
-  );
+  return allItems.value.filter((item) => {
+    if ('title' in item) {
+      return item.title.toLowerCase().includes(searchTerm.value.toLowerCase());
+    } else if ('name' in item) {
+      return item.name.toLowerCase().includes(searchTerm.value.toLowerCase());
+    } else {
+      return false;
+    }
+  });
 });
 
-const searchMovies = () => {
-  displayedMovies.value = searchResults.value;
+const searchItems = () => {
+  console.log('Searching items...');
+  displayedItems.value = searchResults.value.slice(); 
+};
+
+
+
+const fetchAllItems = async () => {
+  try {
+    const [moviesResponse, seriesResponse] = await Promise.all([
+      axios.get('https://api.themoviedb.org/3/discover/movie', { params: { api_key: '53f3e1d3fbfed79960a6076096d187b1' } }),
+      axios.get('https://api.themoviedb.org/3/tv/popular', { params: { api_key: '53f3e1d3fbfed79960a6076096d187b1' } })
+    ]);
+    allItems.value = [...moviesResponse.data.results, ...seriesResponse.data.results];
+    console.log('All items:', allItems.value);
+  } catch (error) {
+    console.error('Error al obtener películas y series:', error);
+  }
 };
 
 const fetchGenres = async () => {
@@ -65,19 +87,7 @@ const fetchGenres = async () => {
 };
 
 onMounted(() => {
-  if (typeof window !== 'undefined') {
-    const storedAllMovies = localStorage.getItem('allMovies');
-    const storedDisplayedMovies = localStorage.getItem('displayedMovies');
-    
-    if (storedAllMovies) {
-      allMovies.value = JSON.parse(storedAllMovies);
-    }
-
-    if (storedDisplayedMovies) {
-      displayedMovies.value = JSON.parse(storedDisplayedMovies);
-    }
-  }
-
+  fetchAllItems();
   fetchGenres();
 });
 </script>

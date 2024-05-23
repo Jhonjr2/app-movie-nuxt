@@ -36,6 +36,8 @@ export default {
 <style scoped>
 .MyList {
   padding: 100px 20px;
+  background: linear-gradient(180deg, black 20%, rgba(98, 255, 237, 0.858) 55%, rgb(9, 22, 30) 100%);
+  color:rgba(212, 29, 29, 0.865);
 }
 
 .favorites {

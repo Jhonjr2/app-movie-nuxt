@@ -1,15 +1,29 @@
 <template>
-    <div>
-        <NavBar/>
-        <main>
+    <div class="layouts">
+        <NavBar />
+        <main class="content">
             <slot></slot>
-        </main>  
-        <Footers :currentYear="currentYear"/>
-   </div>
+        </main>
+        <Footers class="footer_layout" :currentYear="currentYear" />
+    </div>
 </template>
 
 <script setup>
-
-const currentYear = new Date().getUTCFullYear()
-
+const currentYear = new Date().getUTCFullYear();
 </script>
+
+<style>
+.layouts {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.content {
+    flex: 1;
+}
+
+.footer_layout {
+    justify-content: end;
+}
+</style>

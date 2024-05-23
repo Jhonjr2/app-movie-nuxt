@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div  class="Serie">
       <h1>Series</h1>
       <div>
         <input type="text" v-model="searchTerm" @keydown.enter.prevent>
@@ -11,12 +11,12 @@
       <div v-else-if="error">
         <p>Error al obtener series. Por favor, inténtalo de nuevo más tarde.</p>
       </div>
-      <div v-else>
-        <div v-for="series in displayedSeries" :key="series.id">
+      <div class="container_serie" v-else>
+        <div class="info_serie" v-for="series in displayedSeries" :key="series.id">
           <NuxtLink :to="`/series/${series.id}`">
-            <h2>{{ series.name }}</h2>
-            <img :src="'https://image.tmdb.org/t/p/w500' + series.poster_path" :alt="series.name">
-            <p>Fecha de lanzamiento: {{ series.first_air_date }}</p>
+            <img class="img_serie" :src="'https://image.tmdb.org/t/p/w500' + series.poster_path" :alt="series.name">
+            <h2 class="title_serie">{{ series.name }}</h2>
+            <p class="releaseDate_serie">Fecha de lanzamiento: {{ series.first_air_date }}</p>
           </NuxtLink>
         </div>
         <p v-if="displayedSeries.length === 0 && !isLoading">No se encontraron resultados.</p>
@@ -67,4 +67,33 @@
     fetchAllSeries();
   });
   </script>
+
+<style scoped>
+.Serie {
+  padding: 90px 40px 0px;
+}
+
+.container_serie {
+  padding: 30px 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2em;
+}
+
+.info_serie {
+  max-width: 200px;
+}
+
+.releaseDate_serie,
+.title_serie {
+  font-size: 15px;
+  max-width: 100%;
+  color: black;
+}
+
+.img_serie {
+  width: 100%;
+  box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.749);
+}
+</style>
   

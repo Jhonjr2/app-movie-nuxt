@@ -48,5 +48,5 @@ onMounted(() => {
 </script>
 
 <style>
-@import '@/assets/css/components/movie.css';
+@import '@/assets/css/components/movieDetail.css';
 </style>

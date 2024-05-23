@@ -45,3 +45,7 @@ onMounted(() => {
     fetchSeriesDetails();
 });
 </script>
+
+<style>
+@import '@/assets/css/components/movieDetail.css';
+</style>

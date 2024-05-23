@@ -16,10 +16,13 @@
           </li>
         </ul>
       </li>
+      <li class="header_home">
+        <NuxtLink to="/my-list">My List</NuxtLink>
+      </li>
     </ul>
     <div class="search_container">
       <input class="search_movie" type="text" v-model="searchTerm" @keyup.enter="searchMovies" placeholder="Search for a movie..." />
-      <button class="btn_search_movie" @click="searchMovies">Buscar</button>
+      <button class="btn_search_movie" @click="searchMovies">Search</button>
     </div>
   </div>
 </template>
@@ -34,8 +37,8 @@ interface Genre {
 }
 
 const genres = ref<Genre[]>([]);
-const allMovies = ref(JSON.parse(localStorage.getItem('allMovies') || '[]'));
-const displayedMovies = ref(JSON.parse(localStorage.getItem('displayedMovies') || '[]'));
+const allMovies = ref<any[]>([]);
+const displayedMovies = ref<any[]>([]);
 
 const searchTerm = ref('');
 const searchResults = computed(() => {
@@ -47,7 +50,6 @@ const searchResults = computed(() => {
 const searchMovies = () => {
   displayedMovies.value = searchResults.value;
 };
-
 
 const fetchGenres = async () => {
   try {
@@ -63,6 +65,19 @@ const fetchGenres = async () => {
 };
 
 onMounted(() => {
+  if (typeof window !== 'undefined') {
+    const storedAllMovies = localStorage.getItem('allMovies');
+    const storedDisplayedMovies = localStorage.getItem('displayedMovies');
+    
+    if (storedAllMovies) {
+      allMovies.value = JSON.parse(storedAllMovies);
+    }
+
+    if (storedDisplayedMovies) {
+      displayedMovies.value = JSON.parse(storedDisplayedMovies);
+    }
+  }
+
   fetchGenres();
 });
 </script>

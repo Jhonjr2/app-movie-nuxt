@@ -50,12 +50,13 @@
     display: block;
 }
 
-.genre_menu li:hover {
+.link:hover {
     background-color: #f72424d4;
     border-radius: 20px;
 }
 
 .link {
+    padding: 10px;
     color: white;
 }
 
@@ -73,6 +74,7 @@
     border: none;
     border-radius: 5px 0 0 5px;
     background-color: rgba(175, 175, 175, 0.421);
+    color: white;
 }
 
 .btn_search_movie {

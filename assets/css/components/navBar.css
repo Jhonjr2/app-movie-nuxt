@@ -1,0 +1,85 @@
+.header {
+    width: 100%;
+    padding: 5px 10px 5px 0px;
+    display: flex;
+    justify-content: space-between;
+    background-color: black;
+    color: white;
+    position: fixed;
+}
+
+.headers_menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2em;
+}
+
+.header_home a,
+.header_Movie a,
+.header_Genre a {
+    color: white
+}
+
+.logo {
+    width: 190px;
+    padding-left: 30px;
+}
+
+.genre_menu {
+    padding: 10px;
+    display: none;
+    position: absolute;
+    background-color: #1e1e1e;
+    color: white;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.header_genre:hover .genre_menu {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.genre_menu li {
+    padding: 12px 16px;
+    text-decoration: none;
+    color: #ffffff;
+    display: block;
+}
+
+.genre_menu li:hover {
+    background-color: #f72424d4;
+    border-radius: 20px;
+}
+
+.link {
+    color: white;
+}
+
+.search_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    padding-right: 30px;
+}
+
+.search_movie {
+    width: 60%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px 0 0 5px;
+    background-color: rgba(175, 175, 175, 0.421);
+}
+
+.btn_search_movie {
+    width: 25%;
+    padding: 10px;
+    background-color: rgba(244, 0, 0, 0.783);
+    border: none;
+    border-radius: 0px 8px 8px 0px;
+    color: white;
+}

@@ -122,11 +122,22 @@
     }
 
     .btn_favorite {
-        width: 1px;
-        height: 5.7vh;
+        min-width: 45px;
+        height: 5vh;
     }
 
     .releaseDate_movie {
         font-size: 15px;
     }
+
+    .icon_check,
+    .icon_plus {
+        font-size: 15px;
+    }
+
+    .icon_play {
+        width: 20px;
+        height: 22px;
+    }
+
 }

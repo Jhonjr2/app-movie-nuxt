@@ -1,9 +1,11 @@
 <template>
   <div class="header">
+    <NuxtLink to="/">
     <img class="logo" src="../../public/img/logo.png" alt="Logo" />
-    <button class="menu-toggle" @click="toggleMenu" v-show="isSmallScreen">
-      <font-awesome-icon icon="bars" />
-    </button>
+  </NuxtLink>
+      <button class="menu-toggle" @click="toggleMenu" v-show="isSmallScreen">
+        <font-awesome-icon icon="bars" />
+      </button>
     <ul class="headers_menu" :class="{ active: isMenuActive }">
       <li class="header_home">
         <NuxtLink to="/" @click="closeMenu">Movie</NuxtLink>
@@ -15,7 +17,8 @@
         <span>Genre</span>
         <ul class="genre_menu" :class="{ show: isGenreMenuVisible }">
           <li v-for="genre in genres" :key="genre.id">
-            <NuxtLink class="link" :to="{ path: '/', query: { genre: genre.id } }" @click="closeMenu">{{ genre.name }}</NuxtLink>
+            <NuxtLink class="link" :to="{ path: '/', query: { genre: genre.id } }" @click="closeMenu">{{ genre.name }}
+            </NuxtLink>
           </li>
         </ul>
       </li>

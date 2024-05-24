@@ -6,21 +6,21 @@
     </button>
     <ul class="headers_menu" :class="{ active: isMenuActive }">
       <li class="header_home">
-        <NuxtLink to="/">Movie</NuxtLink>
+        <NuxtLink to="/" @click="closeMenu">Movie</NuxtLink>
       </li>
       <li class="header_home">
-        <NuxtLink to="/series/series">Series</NuxtLink>
+        <NuxtLink to="/series/series" @click="closeMenu">Series</NuxtLink>
       </li>
       <li class="header_genre" @mouseover="showGenreMenu" @mouseleave="hideGenreMenu">
         <span>Genre</span>
         <ul class="genre_menu" :class="{ show: isGenreMenuVisible }">
           <li v-for="genre in genres" :key="genre.id">
-            <NuxtLink class="link" :to="{ path: '/', query: { genre: genre.id } }">{{ genre.name }}</NuxtLink>
+            <NuxtLink class="link" :to="{ path: '/', query: { genre: genre.id } }" @click="closeMenu">{{ genre.name }}</NuxtLink>
           </li>
         </ul>
       </li>
-      <li class="header_home">
-        <NuxtLink to="/my-list">My List</NuxtLink>
+      <li class="header_myList">
+        <NuxtLink to="/my-list" @click="closeMenu">My List</NuxtLink>
       </li>
     </ul>
   </div>
@@ -38,7 +38,7 @@ interface Genre {
 const genres = ref<Genre[]>([]);
 const isMenuActive = ref(false);
 const isGenreMenuVisible = ref(false);
-const screenWidth = ref(0); 
+const screenWidth = ref<number | null>(null);
 
 const fetchGenres = async () => {
   try {
@@ -57,6 +57,10 @@ const toggleMenu = () => {
   isMenuActive.value = !isMenuActive.value;
 };
 
+const closeMenu = () => {
+  isMenuActive.value = false;
+};
+
 const showGenreMenu = () => {
   isGenreMenuVisible.value = true;
 };
@@ -65,18 +69,22 @@ const hideGenreMenu = () => {
   isGenreMenuVisible.value = false;
 };
 
-onMounted(() => {
-  fetchGenres();
-  updateScreenWidth(); 
-  window.addEventListener('resize', updateScreenWidth);
-});
-
 const updateScreenWidth = () => {
-  screenWidth.value = window.innerWidth;
+  if (typeof window !== 'undefined') {
+    screenWidth.value = window.innerWidth;
+  }
 };
 
+onMounted(() => {
+  fetchGenres();
+  if (typeof window !== 'undefined') {
+    screenWidth.value = window.innerWidth;
+    window.addEventListener('resize', updateScreenWidth);
+  }
+});
+
 const isSmallScreen = computed(() => {
-  return screenWidth.value <= 768; 
+  return screenWidth.value !== null && screenWidth.value <= 768;
 });
 </script>
 

@@ -6,7 +6,7 @@
         <p>No tienes elementos favoritos.</p>
       </div>
       <div class="container_favorite" v-for="item in favorites" :key="item.id">
-        <NuxtLink :to="getItemLink(item)">
+        <NuxtLink :to="`/movie/${item.id}`">
           <img :src="'https://image.tmdb.org/t/p/w500' + item.poster_path" :alt="item.title">
         </NuxtLink>
       </div>
@@ -28,9 +28,6 @@ export default {
     getFavorites() {
       const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
       this.favorites = favorites;
-    },
-    getItemLink(item) {
-      return item.media_type === 'movie' ? `/movie/${item.id}` : `/series/${item.id}`;
     },
   },
 };

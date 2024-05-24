@@ -9,6 +9,13 @@
           <p class="releaseDate_detailView">{{ formatDate(movie.release_date) }}</p>
         </div>
         <p class="description_detailView">{{ movie.overview }}</p>
+        <div class="container_btnFavorite">
+          <button class="btn_favoriteSerie" v-tooltip="'Add to favorite'" @click="toggleFavorite(movie)">
+            <font-awesome-icon v-if="isFavorite(movie.id)" class="icon_check" icon="check" />
+            <font-awesome-icon v-else class="icon_plus" icon="plus" />
+          </button>
+          <h3>Add to my list</h3>
+        </div>
       </div>
     </div>
     <div class="container_other">
@@ -38,6 +45,33 @@ import type { Movie } from '~/types/Movie';
 const movie = ref<Movie | null>(null);
 const otherMovies = ref<Movie[]>([]);
 const route = useRoute();
+
+const toggleFavorite = (movie: Movie) => {
+  const storedFavorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+  const index = storedFavorites.findIndex((fav: Movie) => fav.id === movie.id);
+  const updatedFavorites = [...storedFavorites];
+  if (index === -1) {
+    updatedFavorites.push(movie);
+  } else {
+    updatedFavorites.splice(index, 1);
+  }
+  localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+  favorites.value = updatedFavorites;
+};
+
+const favorites: Ref<Movie[]> = ref<Movie[]>([]);
+
+if (process.client) {
+  const storedFavorites = localStorage.getItem('favorites');
+  if (storedFavorites) {
+    favorites.value = JSON.parse(storedFavorites);
+  }
+}
+
+const isFavorite = (movieId: number) => {
+  return favorites.value.some((fav: Movie) => fav.id === movieId);
+};
+
 
 const fetchMovieDetails = async () => {
   const id = route.params.id;

@@ -28,6 +28,37 @@
     max-width: 60%;
 }
 
+.container_btnFavorite {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+.container_btnFavorite h3 {
+    font-size: 15px;
+}
+
+.btn_favoriteSerie {
+    height: 40px;
+    padding: 7px 12px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.807);
+    background-color: rgba(54, 52, 52, 0.901);
+    transition: transform .3s ease;
+    color: white;
+}
+
+.btn_favoriteSerie:hover {
+    border: 3px solid rgb(0, 0, 0);
+    color: black;
+}
+
+.btn_favoriteSerie:active {
+    transform: scale(1.2);
+    border: 3px solid rgba(44, 39, 39, 0.716);
+    background-color: rgba(196, 101, 101, 0.352);
+}
+
 .releaseDate_detailView {
     font-size: 20px;
     color: rgba(251, 247, 247, 0.852);

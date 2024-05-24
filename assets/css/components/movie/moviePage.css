@@ -147,7 +147,7 @@
 
     .search_movie {
         padding: 20px 30px;
-        min-width: 70%;
+        min-width: 50%;
         padding: 12px;
         border: none;
         border-radius: 10px 0 0 10px;
@@ -156,7 +156,6 @@
     
     .btn_search_movie {
         padding: 12px 20px;
-        margin-right: 10px;
     }
 
     .info_bottom {
@@ -187,6 +186,14 @@
 }
 
 @media (max-width: 430px) {
+    .search_movie {
+        max-width: 30%;
+    }
+    
+    .btn_search_movie {
+        padding: 12px 20px;
+    }
+
     .btn_favorite {
         padding: 13px 14px;
     }

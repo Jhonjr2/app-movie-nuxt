@@ -17,6 +17,7 @@ const currentYear = new Date().getUTCFullYear();
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    max-width: 1300px;
 }
 
 .content {

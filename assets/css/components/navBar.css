@@ -3,23 +3,11 @@
     padding: 5px 10px 5px 0px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     background-color: black;
     color: white;
     position: fixed;
     z-index: 999;
-}
-
-.headers_menu {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 2em;
-}
-
-.header_home a,
-.header_Movie a,
-.header_Genre a {
-    color: white
 }
 
 .logo {
@@ -27,21 +15,49 @@
     padding-left: 30px;
 }
 
-.genre_menu {
-    padding: 10px;
-    display: none;
-    position: absolute;
-    background-color: #1e1e1e;
+.menu-toggle {
     color: white;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    z-index: 1;
+    background-color: transparent;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
 }
 
-.header_genre:hover .genre_menu {
+.headers_menu {
+    display: flex;
+    background-color: black;
+    width: 30%;
+    padding: 10px;
+    gap: 2em;
+    margin-right: 30px;
+}
+
+.headers_menu.active {
+    display: flex;
+    flex-direction: column;
+}
+
+.header_home a,
+.header_Movie a,
+.header_Genre a {
+    color: white;
+}
+
+.genre_menu {
+    position: absolute;
+    top: calc(46% + 15px);
+    right: 50px;
+    background-color: #1e1e1ef3;
+    color: white;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.234);
+    z-index: 1000;
+    display: none;
+}
+
+.genre_menu.show {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
+    grid-template-columns: repeat(2, 1fr);
 }
 
 .genre_menu li {
@@ -61,28 +77,31 @@
     color: white;
 }
 
-.search_container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 30%;
-    padding-right: 30px;
+menu-toggle {
+    display: none;
 }
 
-.search_movie {
-    width: 60%;
-    padding: 10px;
-    border: none;
-    border-radius: 5px 0 0 5px;
-    background-color: rgba(175, 175, 175, 0.421);
-    color: white;
-}
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+        color: white;
+        background-color: transparent;
+        border: none;
+        font-size: 1.5em;
+        cursor: pointer;
+    }
 
-.btn_search_movie {
-    width: 25%;
-    padding: 10px;
-    background-color: rgba(244, 0, 0, 0.783);
-    border: none;
-    border-radius: 0px 8px 8px 0px;
-    color: white;
+    .headers_menu {
+        display: none;
+        gap: 1em;
+        position: absolute;
+        top: calc(70% + 10px);
+        right: 10px;
+        background-color: black;
+        width: 20%;
+        padding: 10px;
+        border-radius: 10px;
+        box-sizing: border-box;
+        text-align: center;
+    }
 }

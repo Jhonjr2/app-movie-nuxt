@@ -1,6 +1,11 @@
 <template>
   <div class="Movie">
     <h1>Movie</h1>
+    <div class="search_container">
+      <input class="search_movie" type="text" v-model="searchTerm" @keyup.enter="searchMovies"
+        placeholder="Seacrh movie..." />
+      <button class="btn_search_movie" @click="searchMovies">Search</button>
+    </div>
     <div v-if="isLoading">
       <p>Cargando...</p>
     </div>
@@ -15,15 +20,15 @@
         </NuxtLink>
         <div class="info_bottom">
           <p class="releaseDate_movie">{{ formatDate(movie.release_date) }}</p>
-         <div class="icons">
-           <button class="btn_favorite" v-tooltip="'Add to favorite'" @click="toggleFavorite(movie)">
-             <font-awesome-icon v-if="isFavorite(movie.id)" class="icon_check" icon="check" />
-             <font-awesome-icon v-else class="icon_plus" icon="plus" />
-           </button>
-           <NuxtLink :to="`/movie/${movie.id}`">
-           <font-awesome-icon v-tooltip="'Play'" class="icon_play" icon="play" />
-          </NuxtLink>
-         </div>
+          <div class="icons">
+            <button class="btn_favorite" v-tooltip="'Add to favorite'" @click="toggleFavorite(movie)">
+              <font-awesome-icon v-if="isFavorite(movie.id)" class="icon_check" icon="check" />
+              <font-awesome-icon v-else class="icon_plus" icon="plus" />
+            </button>
+            <NuxtLink :to="`/movie/${movie.id}`">
+              <font-awesome-icon v-tooltip="'Play'" class="icon_play" icon="play" />
+            </NuxtLink>
+          </div>
         </div>
       </div>
       <p v-if="displayedMovies.length === 0 && !isLoading">No se encontraron resultados.</p>
@@ -45,6 +50,14 @@ const selectedMovie = ref<Movie | null>(null);
 const isLoading = ref(false);
 const error = ref('');
 const route = useRoute();
+const searchTerm = ref('');
+
+const searchMovies = () => {
+  const searchTermLowerCase = searchTerm.value.toLowerCase();
+  displayedMovies.value = allMovies.value.filter(movie =>
+    movie.title.toLowerCase().includes(searchTermLowerCase)
+  );
+};
 
 const toggleFavorite = (movie: Movie) => {
   const storedFavorites = JSON.parse(localStorage.getItem('favorites') || '[]');

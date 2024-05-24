@@ -1,16 +1,19 @@
 <template>
   <div class="header">
     <img class="logo" src="../../public/img/logo.png" alt="Logo" />
-    <ul class="headers_menu">
+    <button class="menu-toggle" @click="toggleMenu" v-show="isSmallScreen">
+      <font-awesome-icon icon="bars" />
+    </button>
+    <ul class="headers_menu" :class="{ active: isMenuActive }">
       <li class="header_home">
         <NuxtLink to="/">Movie</NuxtLink>
       </li>
       <li class="header_home">
         <NuxtLink to="/series/series">Series</NuxtLink>
       </li>
-      <li class="header_genre">
+      <li class="header_genre" @mouseover="showGenreMenu" @mouseleave="hideGenreMenu">
         <span>Genre</span>
-        <ul class="genre_menu">
+        <ul class="genre_menu" :class="{ show: isGenreMenuVisible }">
           <li v-for="genre in genres" :key="genre.id">
             <NuxtLink class="link" :to="{ path: '/', query: { genre: genre.id } }">{{ genre.name }}</NuxtLink>
           </li>
@@ -20,10 +23,6 @@
         <NuxtLink to="/my-list">My List</NuxtLink>
       </li>
     </ul>
-    <div class="search_container">
-      <input class="search_movie" type="text" v-model="searchTerm" @keyup.enter="searchItems" placeholder="Search for a movie or series..." />
-      <button class="btn_search_movie" @click="searchItems">Search</button>
-    </div>
   </div>
 </template>
 
@@ -37,41 +36,9 @@ interface Genre {
 }
 
 const genres = ref<Genre[]>([]);
-const allItems = ref<any[]>([]);
-const searchTerm = ref('');
-const displayedItems = ref<any[]>([]);
-
-const searchResults = computed(() => {
-  return allItems.value.filter((item) => {
-    if ('title' in item) {
-      return item.title.toLowerCase().includes(searchTerm.value.toLowerCase());
-    } else if ('name' in item) {
-      return item.name.toLowerCase().includes(searchTerm.value.toLowerCase());
-    } else {
-      return false;
-    }
-  });
-});
-
-const searchItems = () => {
-  console.log('Searching items...');
-  displayedItems.value = searchResults.value.slice(); 
-};
-
-
-
-const fetchAllItems = async () => {
-  try {
-    const [moviesResponse, seriesResponse] = await Promise.all([
-      axios.get('https://api.themoviedb.org/3/discover/movie', { params: { api_key: '53f3e1d3fbfed79960a6076096d187b1' } }),
-      axios.get('https://api.themoviedb.org/3/tv/popular', { params: { api_key: '53f3e1d3fbfed79960a6076096d187b1' } })
-    ]);
-    allItems.value = [...moviesResponse.data.results, ...seriesResponse.data.results];
-    console.log('All items:', allItems.value);
-  } catch (error) {
-    console.error('Error al obtener películas y series:', error);
-  }
-};
+const isMenuActive = ref(false);
+const isGenreMenuVisible = ref(false);
+const screenWidth = ref(0); 
 
 const fetchGenres = async () => {
   try {
@@ -86,9 +53,30 @@ const fetchGenres = async () => {
   }
 };
 
+const toggleMenu = () => {
+  isMenuActive.value = !isMenuActive.value;
+};
+
+const showGenreMenu = () => {
+  isGenreMenuVisible.value = true;
+};
+
+const hideGenreMenu = () => {
+  isGenreMenuVisible.value = false;
+};
+
 onMounted(() => {
-  fetchAllItems();
   fetchGenres();
+  updateScreenWidth(); 
+  window.addEventListener('resize', updateScreenWidth);
+});
+
+const updateScreenWidth = () => {
+  screenWidth.value = window.innerWidth;
+};
+
+const isSmallScreen = computed(() => {
+  return screenWidth.value <= 768; 
 });
 </script>
 

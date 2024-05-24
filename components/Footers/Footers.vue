@@ -16,7 +16,6 @@
 </style>
 
 <script setup>
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 defineProps({
     currentYear: Number
 })

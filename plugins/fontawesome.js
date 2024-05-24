@@ -1,9 +1,13 @@
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faCheck, faPlus, faEnvelope, faPlay } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faPlus, faEnvelope, faPlay, faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-library.add(faPlus, faCheck, faEnvelope, faPlay);
+if (process.client) {
+  library.add(faPlus, faCheck, faEnvelope, faPlay, faBars);
+}
 
 export default defineNuxtPlugin((nuxtApp) => {
-  nuxtApp.vueApp.component('font-awesome-icon', FontAwesomeIcon);
+  if (process.client) {
+    nuxtApp.vueApp.component('font-awesome-icon', FontAwesomeIcon);
+  }
 });

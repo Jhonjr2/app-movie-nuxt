@@ -1,6 +1,10 @@
 <template>
   <div class="Serie">
     <h1>Series</h1>
+    <div class="search_container">
+      <input class="search_series" type="text" v-model="searchTerm" @keyup.enter="searchSeries" placeholder="Search serie..." />
+      <button class="btn_search_series" @click="searchSeries">Search</button>
+    </div>
     <div v-if="isLoading">
       <p>Cargando...</p>
     </div>
@@ -55,7 +59,7 @@ const toggleFavorite = (series: Series) => {
   favorites.value = updatedFavorites;
 };
 
-const favorites: Ref<Series[]> = ref<Series[]>([]);
+const favorites = ref<Series[]>([]);
 
 if (process.client) {
   const storedFavorites = localStorage.getItem('favorites');
@@ -88,6 +92,13 @@ const fetchAllSeries = async () => {
 onMounted(() => {
   fetchAllSeries();
 });
+
+const searchSeries = () => {
+  const searchTermLowerCase = searchTerm.value.toLowerCase();
+  displayedSeries.value = allSeries.value.filter(series =>
+    series.name.toLowerCase().includes(searchTermLowerCase)
+  );
+};
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);

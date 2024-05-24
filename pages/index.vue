@@ -3,7 +3,7 @@
     <h1 class="text_welcome">Welcome, you will find the best movies. Explore now.</h1>
     <div class="search_container">
       <input class="search_movie" type="text" v-model="searchTerm" @keyup.enter="searchMovies"
-        placeholder="Seacrh movie..." />
+        placeholder="Search movie..." />
       <button class="btn_search_movie" @click="searchMovies">Search</button>
     </div>
     <div v-if="isLoading">
@@ -38,11 +38,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
-import type { Ref } from 'vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios';
-import type { Movie } from '~/types/Movie';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import type { Movie } from '~/types/Movie';
 
 const allMovies = ref<Movie[]>([]);
 const displayedMovies = ref<Movie[]>([]);
@@ -54,9 +53,10 @@ const searchTerm = ref('');
 
 const searchMovies = () => {
   const searchTermLowerCase = searchTerm.value.toLowerCase();
-  displayedMovies.value = allMovies.value.filter(movie =>
-    movie.title.toLowerCase().includes(searchTermLowerCase)
-  );
+  displayedMovies.value = allMovies.value.filter(movie => {
+    const movieYear = new Date(movie.release_date).getFullYear().toString();
+    return movie.title.toLowerCase().includes(searchTermLowerCase) || movieYear.includes(searchTermLowerCase);
+  });
 };
 
 const toggleFavorite = (movie: Movie) => {
@@ -72,7 +72,7 @@ const toggleFavorite = (movie: Movie) => {
   favorites.value = updatedFavorites;
 };
 
-const favorites: Ref<Movie[]> = ref<Movie[]>([]);
+const favorites = ref<Movie[]>([]);
 
 if (process.client) {
   const storedFavorites = localStorage.getItem('favorites');
@@ -84,7 +84,6 @@ if (process.client) {
 const isFavorite = (movieId: number) => {
   return favorites.value.some((fav: Movie) => fav.id === movieId);
 };
-
 
 const fetchMovies = async (genreId: string | null) => {
   isLoading.value = true;
@@ -122,7 +121,6 @@ const formatDate = (dateString: string) => {
   const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
   return date.toLocaleDateString('es-ES', options);
 };
-
 </script>
 
 <style scoped>

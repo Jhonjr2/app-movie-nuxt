@@ -95,9 +95,10 @@ onMounted(() => {
 
 const searchSeries = () => {
   const searchTermLowerCase = searchTerm.value.toLowerCase();
-  displayedSeries.value = allSeries.value.filter(series =>
-    series.name.toLowerCase().includes(searchTermLowerCase)
-  );
+  displayedSeries.value = allSeries.value.filter(series => {
+    const seriesYear = new Date(series.first_air_date).getFullYear().toString();
+    return series.name.toLowerCase().includes(searchTermLowerCase) || seriesYear.includes(searchTermLowerCase);
+  });
 };
 
 const formatDate = (dateString: string) => {
@@ -105,7 +106,6 @@ const formatDate = (dateString: string) => {
   const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
   return date.toLocaleDateString('es-ES', options);
 };
-
 </script>
 
 <style scoped>

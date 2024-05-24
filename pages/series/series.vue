@@ -1,6 +1,6 @@
 <template>
   <div class="Serie">
-    <h1>Series</h1>
+    <h1>The best trending Series, explore now and enjoy with your family</h1>
     <div class="search_container">
       <input class="search_series" type="text" v-model="searchTerm" @keyup.enter="searchSeries" placeholder="Search serie..." />
       <button class="btn_search_series" @click="searchSeries">Search</button>

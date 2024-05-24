@@ -2,7 +2,14 @@
     padding: 90px 10px 0px;
 }
 
+
+.search_container,
+.text_welcome {
+    padding: 10px 30px;
+}
+
 .search_movie {
+    padding: 20px;
     min-width: 20%;
     padding: 12px;
     border: none;
@@ -100,8 +107,18 @@
 }
 
 @media (max-width: 768px) {
+    .search_movie {
+        padding: 20px 30px;
+        min-width: 40%;
+        padding: 12px;
+        border: none;
+        border-radius: 10px 0 0 10px;
+    
+    }
+
     .container_movie {
         justify-content: center;
+        align-items: center;
     }
 
     .info_movie {
@@ -127,6 +144,21 @@
 }
 
 @media (max-width: 568px) {
+
+    .search_movie {
+        padding: 20px 30px;
+        min-width: 70%;
+        padding: 12px;
+        border: none;
+        border-radius: 10px 0 0 10px;
+    
+    }
+    
+    .btn_search_movie {
+        padding: 12px 20px;
+        margin-right: 10px;
+    }
+
     .info_bottom {
         display: flex;
         flex-direction: column;

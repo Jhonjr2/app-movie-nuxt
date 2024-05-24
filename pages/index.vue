@@ -1,6 +1,6 @@
 <template>
   <div class="Movie">
-    <h1>Movie</h1>
+    <h1 class="text_welcome">Welcome, you will find the best movies. Explore now.</h1>
     <div class="search_container">
       <input class="search_movie" type="text" v-model="searchTerm" @keyup.enter="searchMovies"
         placeholder="Seacrh movie..." />

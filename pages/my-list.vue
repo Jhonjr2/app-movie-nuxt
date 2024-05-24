@@ -35,9 +35,8 @@ export default {
 
 <style scoped>
 .MyList {
-  width: 100%;
   height: 100vh;
-  padding: 100px 20px;
+  padding: 90px 0px 0px 20px;
   color:rgba(212, 29, 29, 0.865);
 }
 

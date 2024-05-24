@@ -1,13 +1,13 @@
 <template>
   <div class="MyList">
-    <h1>Mis Lista</h1>
+    <h1>Mi Lista</h1>
     <div class="favorites">
       <div v-if="favorites.length === 0">
-        <p>No tienes películas favoritas.</p>
+        <p>No tienes elementos favoritos.</p>
       </div>
-      <div class="container_favorite" v-for="movie in favorites" :key="movie.id">
-        <NuxtLink :to="`/movie/${movie.id}`">
-          <img :src="'https://image.tmdb.org/t/p/w500' + movie.poster_path" :alt="movie.title">
+      <div class="container_favorite" v-for="item in favorites" :key="item.id">
+        <NuxtLink :to="getItemLink(item)">
+          <img :src="'https://image.tmdb.org/t/p/w500' + item.poster_path" :alt="item.title">
         </NuxtLink>
       </div>
     </div>
@@ -29,14 +29,17 @@ export default {
       const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
       this.favorites = favorites;
     },
+    getItemLink(item) {
+      return item.media_type === 'movie' ? `/movie/${item.id}` : `/series/${item.id}`;
+    },
   },
 };
 </script>
 
 <style scoped>
 .MyList {
-  padding: 90px 0px 0px 20px;
-  color:rgba(212, 29, 29, 0.865);
+  padding: 90px 0 0 20px;
+  color: rgba(212, 29, 29, 0.865);
 }
 
 .favorites {

@@ -46,11 +46,24 @@ export default {
 }
 
 .container_favorite {
+  display: flex;
+  gap: 1em;
   margin-bottom: 20px;
+  width: calc(15% + 5px);
 }
 
 .container_favorite img {
-  width: 200px;
+  width: 90%;
   margin-right: 10px;
+  border-radius: 5px
+}
+
+@media (max-width: 668px) {
+  .container_favorite {
+    display: flex;
+    gap: 1em;
+    width: calc(30% + 10px);
+  }
+
 }
 </style>

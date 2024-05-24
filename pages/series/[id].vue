@@ -36,7 +36,6 @@ import axios from 'axios';
 import type { Series } from '~/types/Series';
 
 const route = useRoute();
-const { push } = useRouter();
 const series = ref<Series | null>(null);
 const otherSeries = ref<Series[]>([]);
 
